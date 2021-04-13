@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<!--
+User Profile Sidebar by @keenthemes
+A component of Metronic Theme - #1 Selling Bootstrap 3 Admin Theme in Themeforest: http://j.mp/metronictheme
+Licensed under MIT
+-->
+{% block content %}
+<div id='login' class="container emp-profile">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <img src="{{profiles.image.url}}" alt=""/>
+                    <!-- <div class="file btn btn-lg btn-primary">
+                        Change Photo
+                        <input type="file" name="file"/>
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                            <h5>
+                               {% if profiles.doctor == True %}Dr/{% endif %}{{profiles.name.username|title}}
+                            </h5>
+                            <h6>
+                                {% if profiles.patient == True %}Patient{% endif %}
+                            </h6>
+                            <p class="proile-rating">Clinics : <span>{{clinics.count}}</span></p>
+                            <p class="proile-rating">Appointment : <span> {{reservations.count}} </span></p>
+                           
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                        </li>
+                     
+                    </ul>
+                </div>
+            </div>
+            {% if profiles.doctor == True  %}
+              <div class="col-md-2">
+        <a name="btnAddMore" class="profile-edit-btn" href="{% url 'home:clinic' id=profiles.id %}">Add Clinic</a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content profile-tab" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profiles.name.username}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{profiles.name.email}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Phone</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>123 456 7890</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Profession</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{% if profiles.patient == True %}Patient{% endif %}</p>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form> 
+    {% if profiles.doctor == True %}
+    <div class="row">
+        {% for i in clinics %}
+        <div class='col col-lg-4 col-md-12 col-sm-12'>
+            <div class="card" style="width: 18rem;">
+        <div class="card-body">
+                  <h5 class="card-title">{{i.name|title}}</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <p class="proile-rating">Date : <span>{{i.date|date:"d M Y"}}</span></p>
+
+                  <p class="proile-rating">Start at : <span>{{i.start_time|time}}</span></p>
+                  <p class="proile-rating">Closse at : <span>{{i.end_time|time}}</span></p>
+
+                  <a href="{% url 'home:reserve' id=i.id %}" class="btn btn-primary">take your turn</a>
+                </div>
+    </div>
+    </div> 
+   
+                 {% endfor %}
+        </div>
+      {% endif %}
+</div>
+{% endblock %}
